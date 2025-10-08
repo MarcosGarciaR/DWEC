@@ -1,0 +1,53 @@
+
+body{
+    width: 50%;
+}
+
+
+#areaCalculadora{
+    border: 2px;
+    border-style: solid;
+    flex: 1 1 300px;
+    background-color: rgb(51, 66, 94);
+    justify-content: center;
+    display:flex;
+}
+
+#areaCalculadora #cabecera{
+    text-align: center;
+    flex-wrap: wrap;
+    color: darkgray;
+    justify-content: flex-start;
+}
+
+#areaMuestra{
+    width: 90%;
+    height: 20%;
+    background-color: lightblue;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+#areaNumeros{
+    display:flex;
+    flex-direction: column-reverse;
+    flex-basis: 10%;
+    border: 3px;
+    border-style: solid;
+}
+
+button{
+    background-color: lightgray;
+}
+.impar:hover{
+    background-color: red;
+}
+
+.par:hover{
+    background-color: green;
+}
+
+
+.signo:hover{
+    background-color: yellow;
+}
