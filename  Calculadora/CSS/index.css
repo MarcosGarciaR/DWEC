@@ -1,53 +1,104 @@
-
-body{
-    width: 50%;
-}
-
-
-#areaCalculadora{
-    border: 2px;
-    border-style: solid;
-    flex: 1 1 300px;
-    background-color: rgb(51, 66, 94);
+body{ 
+    display: flex;
     justify-content: center;
-    display:flex;
+    padding: 20px;
 }
 
-#areaCalculadora #cabecera{
-    text-align: center;
-    flex-wrap: wrap;
+/* Calculadora */
+#areaCalculadora{
+    display: flex;
+    flex-direction: column;
+    width: 850px; /* ancho fijo opcional */
+    background-color: rgb(51, 66, 94);
+    border: 5px solid black;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+/* Cabecera */
+#cabecera{
+    display: flex;
+    font-size: 2em;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-bottom: 5px;
     color: darkgray;
-    justify-content: flex-start;
 }
 
-#areaMuestra{
-    width: 90%;
-    height: 20%;
-    background-color: lightblue;
-    padding-left: 5%;
-    padding-right: 5%;
+/* Zona del texto (desabilitada para solo mostrar el resultado) */
+input{
+    background-color: rgb(127, 147, 148);
+    color: rgb(41, 31, 31);
+    width: 100%;
+    text-align: right;
+    height: 70px;
+    font-size: xx-large;
+    border: 2px inset cadetblue;
+    border-radius: 5px;
+    box-shadow: inset 2px 2px 5px rgba(0,0,0,0.1), 
+                inset 2px 2px 5px rgba(255,255,255,0.8);
+    margin-bottom: 10px;
+    margin-right: 4%;
 }
 
+/* Área de botones */
 #areaNumeros{
-    display:flex;
+    margin-top: 2%;
+    display: flex;
+    gap: 5px;
+}
+
+/* Columna de botones numéricos */
+#botonesNum{
+    display: flex;
     flex-direction: column-reverse;
-    flex-basis: 10%;
-    border: 3px;
-    border-style: solid;
+    gap: 5px;
+    flex: 4;
 }
 
-button{
-    background-color: lightgray;
+/* Filas dentro de la columna */
+#botonesNum > div{
+    display: flex;
+    gap: 5px;
 }
-.impar:hover{
+
+/* Todos los botones de la columna numérica se reparten equitativamente por el largo de la columna */
+#botonesNum button{
+    flex: 1; 
+    height: 130px; 
+    font-size: large;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+/* El punto (coma) del 0 más pequeño que default*/
+.fa-circle{
+    font-size: small;
+}
+
+/* Botones especiales */
+.especiales{
     background-color: red;
+    color: whitesmoke;
+    border-radius: 5px;
 }
 
-.par:hover{
-    background-color: green;
+#columnaIgual {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    border-radius: 5px;
+    flex: 1;
 }
 
+#columnaIgual button.especiales{
+    flex:1
+}
 
-.signo:hover{
-    background-color: yellow;
+#signoIgual{
+    flex-direction: row;
+    flex: 2.1;
+    width: 100%;
+    font-size: x-large;
 }

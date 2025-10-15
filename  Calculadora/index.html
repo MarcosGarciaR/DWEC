@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora</title>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v7.1.0/css/all.css" crossorigin="anonymous">
     <link rel="stylesheet" href="./CSS/index.css" />
 
 </head>
@@ -21,38 +21,61 @@
     <div id="areaCalculadora">
         <div id="cabecera">
             <h3>CASIO</h3>
+            <h3 style="color: #993c3c;">S-V.P.A.M.</h3>
             <h5>fx-82MS</h5>
 
-            <h3 style="color: #993c3c;">S-V.P.A.M.</h3>
         </div>
-        <div id="areaMuestra">
-            <p>AREA DE TEXTO</p>
-        </div>
+        <input type="text" id="areaMuestra" class="display" disabled value="0">
 
         <div id="areaNumeros">
-            <button class="par">0</button>
-            <button class="impar">1</button>
-            <button class="par">2</button>
-            <button class="impar">3</button>
-            <button class="par">4</button>
-            <button class="impar">5</button>
-            <button class="par">6</button>
-            <button class="impar">7</button>
-            <button class="par">8</button>
-            <button class="impar">9</button>
+            <div id="botonesNum">
+                <div>
+                    <button class="par" onclick="concatCadena('0')">0</button>
+                    <button class="signo" onclick="concatCadena('.')"><i class="fa-solid fa-circle"></i></button>
+                    <button class="signo" onclick="concatCadena('**')"><i class="fa-solid fa-superscript"></i></button>
+                    <button class="signo" onclick="sqrt()"><i class="fa-solid fa-square-root-variable"></i></button>
+                    <button class="signo" onclick="concatCadena((Math.PI).toFixed(2))">𝝅</button>
+                </div>
+
+                <div>
+                    <button class="impar" onclick="concatCadena('1')">1</button>
+                    <button class="par" onclick="concatCadena('2')">2</button>
+                    <button class="impar" onclick="concatCadena('3')">3</button>
+                    <button class="signo" onclick="concatCadena('+')"><i class="fa-solid fa-plus"></i></button>
+                    <button class="signo" onclick="concatCadena('-')"><i class="fa-solid fa-minus"></i></button>
+                </div>
+
+                <div>
+                    <button class="par" onclick="concatCadena('4')">4</button>
+                    <button class="impar" onclick="concatCadena('5')">5</button>
+                    <button class="par" onclick="concatCadena('6')">6</button>
+                    <button class="signo" onclick="concatCadena('*')" ><i class="fa-solid fa-xmark"></i></button>
+                    <button class="signo" onclick="concatCadena('/')"><i class="fa-solid fa-divide"></i></button>
+
+                </div>
+
+                <div>
+                    <button class="impar" onclick="concatCadena('7')">7</button>
+                    <button class="par" onclick="concatCadena('8')">8</button>
+                    <button class="impar" onclick="concatCadena('9')">9</button>
+                <button class="signo" onclick="concatCadena('&#40')">&#40</button>
+                <button class="signo" onclick="concatCadena('&#41')">&#41</button>
+
+                </div>
+            </div>
+
+            <div id="columnaIgual">
+                    <button class="especiales" onclick="borrar()">DEL</button>
+                    <button class="especiales" onclick="reset()">AC</button>
+                <button id="signoIgual" onclick="calcular()"><i class="fa-solid fa-equals"></i></button>
+            </div>
+
         </div>
 
-        <div id="areaSignos">
-            <button class="signo">·</button>
-            <button class="signo">EXP</button>
-            <button class="signo">+</button>
-            <button class="signo">-</button>
-            <button class="signo">*</button>
-            <button class="signo"><i class="fas fa-divide"></i>
-            </button>
-        </div>
     </div>
 
+
+    <script src="JS/js.js"></script>
 </body>
 
 </html>
