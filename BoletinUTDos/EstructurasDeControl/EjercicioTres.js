@@ -20,5 +20,6 @@ function calcularBinario(){
 
         pasos += `\nRepresentación binaria de ${numero}: ${binario}`;
         alert(pasos);
-}
+    }
+    
 }
