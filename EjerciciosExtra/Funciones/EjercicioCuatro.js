@@ -1,10 +1,11 @@
 function arrayUpper(otroArray){
     let miArray = new Array;
     for (let i = 0; i<otroArray.length; i++){
-        miArray[i] = otroArray[i].toUpperCase;
+        miArray[i] = otroArray[i];
     }
     return (miArray);
 }
+
 function rellenarArray(){
     let primerArray = palabraToArray();
     alert(arrayUpper(primerArray));
