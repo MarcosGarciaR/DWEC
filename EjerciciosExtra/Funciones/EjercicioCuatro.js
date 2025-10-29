@@ -1,7 +1,7 @@
 function arrayUpper(otroArray){
     let miArray = new Array;
     for (let i = 0; i<otroArray.length; i++){
-        miArray[i] = otroArray[i];
+        miArray[i] = otroArray[i].toUpperCase();
     }
     return (miArray);
 }
