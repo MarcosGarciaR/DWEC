@@ -1,0 +1,1 @@
+//Importa una función, una constante y una clase desde un directorio diferente al anterior

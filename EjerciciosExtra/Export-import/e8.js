@@ -1,0 +1,1 @@
+//Importa una función, una constante y una clase por defecto (en caso de que lo permita)
