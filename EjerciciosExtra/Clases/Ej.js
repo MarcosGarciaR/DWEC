@@ -112,7 +112,7 @@ class Estudiante extends Persona {
   }
 }
 
-let estudiante1 = new Estudiante("Marcos", 19, "Matemáticas");
+let estudiante1 = new Estudiante("Marcos", 19, "Informatica");
 
 console.log(estudiante1.mostrarAtributos());
 console.log(estudiante1.mostrarCurso());
@@ -304,5 +304,5 @@ class Alumno extends Persona{
 let persona10 = new Persona("Marcos", 19);
 let alumno1 = new Alumno("Manuel",20);
 
-console.log(persona1.mostrarAtributos());
+console.log(persona10.mostrarAtributos());
 console.log(alumno1.mostrarAtributos());
