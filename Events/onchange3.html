@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>onchange</title>
+    <script type="text/javascript">
+      function validar(entrada) {
+        if (isNaN(entrada.value)) {
+          alert("El valor debe ser numerico");
+          entrada.value = "";
+        } else if (entrada.value <= 0) {
+          alert("El valor debe ser superior a 0");
+          entrada.value = "";
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <p>Introuduzca un valor superior a 0:</p>
+
+    <form action="#" method="get">
+      <input type="text" name="dato" onchange="validar(this)" />
+    </form>
+  </body>
+</html>

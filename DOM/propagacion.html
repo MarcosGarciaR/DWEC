@@ -1,0 +1,85 @@
+<!--
+2. El Objeto event y Control del Flujo
+Cuando se dispara un evento, el navegador crea un objeto event (o e) y lo pasa automáticamente a la función manejadora.
+
+A. Propiedades Clave del Objeto event
+Propiedad	Descripción
+    e.target	El elemento DOM donde se originó el evento.
+    e.type	El nombre del evento ('click', 'keydown', etc.).
+    e.clientX / e.clientY	Coordenadas horizontales/verticales del puntero del ratón relativas a la ventana del navegador.
+    e.altKey, e.ctrlKey, e.shiftKey	Devuelve true si la tecla Alt, Control o Shift fue pulsada durante el evento.
+    e.key / e.keyCode	El valor de la tecla presionada (usado en eventos de teclado).
+
+B. Métodos para Anular Comportamiento y Propagación
+Método	Propósito
+    e.preventDefault()	Cancela la acción por defecto del navegador asociada al evento. Ejemplo: evita que un submit envíe el formulario o que un enlace navegue.
+    e.stopPropagation()	Detiene la propagación del evento a otros elementos (detiene el burbujeo o la captura).
+Ejemplo de preventDefault() y Coordenadas:
+
+<a href="https://ejemplo.com" id="miEnlace">Clic para ver coordenadas</a>
+<p id="coordenadas"></p>
+<script>
+    document.getElementById('miEnlace').addEventListener('click', function(e) {
+        // 1. Evita que el navegador navegue a "ejemplo.com"
+        e.preventDefault(); 
+        
+        // 2. Muestra las coordenadas donde ocurrió el clic
+        let x = e.clientX;
+        let y = e.clientY;
+        document.getElementById('coordenadas').textContent = `Clic en coordenadas: (${x}, ${y})`;
+    });
+</script>
+
+3. Propagación de Eventos: Captura y Burbujeo
+La propagación define el orden en que los elementos anidados reciben un evento.
+
+    Fase de Captura (Capturing): El evento viaja desde la raíz del DOM (documento) 
+               hacia el elemento de destino.
+    Fase de Burbujeo (Bubbling): El evento viaja desde el elemento de destino 
+                hacia arriba, volviendo a la raíz del DOM.
+
+El tercer parámetro de addEventListener() decide en qué fase se registrará el manejador:
+
+    false (o omitido): El manejador se registra en la fase de Burbujeo (por defecto).
+    true: El manejador se registra en la fase de Captura.
+
+Ejemplo de Burbujeo y stopPropagation(): Cuando se hace clic en el <button>, 
+    el evento burbujea hacia el <p> y luego hacia el <div>.
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>event-propagación</title>
+  </head>
+  <body>
+    <div id="div-padre">
+      <button id="boton-hijo">Clic</button>
+    </div>
+    <script>
+      let div = document.getElementById("div-padre");
+      let boton = document.getElementById("boton-hijo");
+
+      div.addEventListener(
+        "click",
+        () => console.log("1. Clic en DIV (Padre)"),
+        false
+      ); // Se ejecuta después
+
+      boton.addEventListener(
+        "click",
+        (e) => {
+          console.log("2. Clic en BOTÓN (Hijo)");
+          e.stopPropagation(); // Detiene el burbujeo aquí
+        },
+        false
+      );
+
+      // Resultado al hacer clic en el botón:
+      // 2. Clic en BOTÓN (Hijo)
+      // El mensaje "1. Clic en DIV (Padre)" no se ejecuta.
+    </script>
+  </body>
+</html>
