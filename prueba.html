@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viajes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #222e33;
+            color: #fff;
+        }
+
+        #mostrar {
+            display: inline-block;
+            padding: 8px 14px;
+            background: #1b2730;
+            color: #fff;
+            border: 2px solid #4b6974;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul#lista-viajes {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        ul#lista-viajes li {
+            width: 300px;
+        }
+
+        .viaje {
+            background: #38464a;
+            padding: 12px;
+            border-radius: 4px;
+            position: relative;
+            box-shadow: 0 6px 0 rgba(0, 0, 0, 0.25);
+        }
+
+        .precio-top {
+            position: absolute;
+            top: -18px;
+            right: -6px;
+            transform: rotate(-14deg);
+            color: #fff;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .precio-top.destacado {
+            color: #f39c12;
+            text-decoration: underline;
+        }
+
+        .viaje h2 {
+            margin: 0 0 8px 0;
+            font-size: 18px;
+            color: #fff;
+        }
+
+        .detalle {
+            display: block;
+            background: #66a8d9;
+            color: #042b33;
+            padding: 8px;
+            border-radius: 3px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .detalle.destacado {
+            color: orange;
+            text-decoration: underline;
+        }
+
+        .reserva {
+            display: block;
+            width: 80%;
+            margin: 10px auto;
+            padding: 8px;
+            background: #39b54a;
+            color: #042b33;
+            border: none;
+            border-radius: 3px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .fotos {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .fotos img {
+            max-width: 90%;
+            display: block;
+            margin: 6px auto 0;
+            border: 4px solid #122226;
+            background: #000;
+        }
+
+        .fotos span {
+            display: block;
+            margin-top: 6px;
+            color: #ddd;
+            text-align: center;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 999;
+        }
+
+        .modal-reserva {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            color: #000;
+            padding: 25px;
+            border-radius: 8px;
+            z-index: 1000;
+            min-width: 350px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-reserva h3 {
+            margin: 0 0 20px 0;
+            font-size: 18px;
+            color: #222;
+        }
+
+        .modal-reserva input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .modal-reserva input:focus {
+            outline: none;
+            border-color: #39b54a;
+            box-shadow: 0 0 5px rgba(57, 181, 74, 0.3);
+        }
+
+        .modal-reserva button {
+            width: 100%;
+            padding: 10px;
+            background: #39b54a;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .modal-reserva button:hover {
+            background: #2d8a38;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 12px;
+            margin-bottom: 10px;
+            min-height: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="mostrar">MOSTRAR VIAJES</h1>
+
+    <script>
+        const viajes = [
+            {
+                clase_pais: 'usa',
+                ciudad_h2: 'New York, NY',
+                detalle_precio_total: '1,899',
+                detalle_num_noches: 7,
+                precio_noche: 275,
+                ruta_imagen: './photos/newyork.jpg',
+                pie_imagen: 'Puente Brooklyn'
+            },
+            {
+                clase_pais: 'paris',
+                ciudad_h2: 'Paris, Francia',
+                detalle_precio_total: '1,499',
+                detalle_num_noches: 5,
+                precio_noche: 300,
+                ruta_imagen: './photos/paris.jpg',
+                pie_imagen: 'Notre Dame de Paris'
+            },
+            {
+                clase_pais: 'uk',
+                ciudad_h2: 'Londres, UK',
+                detalle_precio_total: '2,199',
+                detalle_num_noches: 5,
+                precio_noche: 440,
+                ruta_imagen: './photos/london.jpg',
+                pie_imagen: 'Torre de Londres'
+            }
+        ];
+
+        let listaVisible = false;
+        const botonMostrar = document.getElementById('mostrar');
+
+        botonMostrar.addEventListener('click', function() {
+            if (!listaVisible) {
+                crearDOM();
+                listaVisible = true;
+                botonMostrar.textContent = 'OCULTAR VIAJES';
+            } else {
+                eliminarDOM();
+                listaVisible = false;
+                botonMostrar.textContent = 'MOSTRAR VIAJES';
+            }
+        });
+
+        function crearDOM() {
+            const lista = document.createElement('ul');
+            lista.id = 'lista-viajes';
+
+            for (let i = 0; i < viajes.length; i++) {
+                const v = viajes[i];
+                const li = document.createElement('li');
+                li.className = 'viaje ' + v.clase_pais;
+
+                const ptop = document.createElement('div');
+                ptop.className = 'precio-top';
+                ptop.textContent = '$' + v.precio_noche + '/night';
+
+                const h = document.createElement('h2');
+                h.textContent = v.ciudad_h2;
+
+                const det = document.createElement('span');
+                det.className = 'detalle';
+                det.textContent = v.detalle_precio_total + '€ por ' + v.detalle_num_noches + ' noches';
+
+                const btn = document.createElement('button');
+                btn.className = 'reserva';
+                btn.textContent = 'Resérvalo ya!';
+                btn.addEventListener('click', function() {
+                    mostrarModal(v.ciudad_h2);
+                });
+
+                const fotos = document.createElement('ul');
+                fotos.className = 'fotos';
+
+                const fi = document.createElement('li');
+                const img = document.createElement('img');
+                img.src = v.ruta_imagen;
+                img.alt = v.pie_imagen;
+
+                const sp = document.createElement('span');
+                sp.textContent = v.pie_imagen;
+
+                img.addEventListener('mouseenter', function() {
+                    ptop.classList.add('destacado');
+                });
+                img.addEventListener('mouseleave', function() {
+                    ptop.classList.remove('destacado');
+                });
+
+                sp.addEventListener('mouseenter', function() {
+                    ptop.classList.add('destacado');
+                });
+                sp.addEventListener('mouseleave', function() {
+                    ptop.classList.remove('destacado');
+                });
+
+                fi.appendChild(img);
+                fi.appendChild(sp);
+                fotos.appendChild(fi);
+
+                li.appendChild(ptop);
+                li.appendChild(h);
+                li.appendChild(det);
+                li.appendChild(btn);
+                li.appendChild(fotos);
+
+                lista.appendChild(li);
+            }
+
+            botonMostrar.parentNode.insertBefore(lista, botonMostrar.nextSibling);
+        }
+
+        function eliminarDOM() {
+            const l = document.getElementById('lista-viajes');
+            if (l) {
+                l.remove();
+            }
+        }
+
+        function mostrarModal(ciudad) {
+            const ov = document.createElement('div');
+            ov.className = 'overlay';
+
+            const m = document.createElement('div');
+            m.className = 'modal-reserva';
+
+            const t = document.createElement('h3');
+            t.textContent = 'Reservar viaje a ' + ciudad;
+
+            const inp = document.createElement('input');
+            inp.type = 'text';
+            inp.placeholder = 'Ingrese su nombre';
+
+            const err = document.createElement('div');
+            err.className = 'error-message';
+
+            const a = document.createElement('button');
+            a.textContent = 'Aceptar';
+
+            a.addEventListener('click', function() {
+                const nombre = inp.value.trim();
+
+                if (nombre === '') {
+                    err.textContent = 'El nombre no puede estar vacío';
+                    return;
+                }
+
+                let r = JSON.parse(localStorage.getItem('reservas')) || [];
+                r.push({
+                    nombre: nombre,
+                    ciudad: ciudad,
+                    fecha: new Date().toLocaleString()
+                });
+                localStorage.setItem('reservas', JSON.stringify(r));
+
+                ov.remove();
+                m.remove();
+
+                alert('¡Gracias ' + nombre + '! Tu reserva a ' + ciudad + ' ha sido guardada.');
+            });
+
+            ov.addEventListener('click', function() {
+                ov.remove();
+                m.remove();
+            });
+
+            m.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+
+            m.appendChild(t);
+            m.appendChild(inp);
+            m.appendChild(err);
+            m.appendChild(a);
+
+            document.body.appendChild(ov);
+            document.body.appendChild(m);
+
+            inp.focus();
+        }
+    </script>
+</body>
+</html>

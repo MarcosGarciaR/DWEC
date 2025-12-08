@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Viajes</title>
+
+    <style>
+        body {
+            background: #3b3f46;
+            font-family: Arial, sans-serif;
+            color: white;
+            padding: 20px;
+        }
+
+        #mostrar {
+            cursor: pointer;
+            font-size: 28px;
+            margin-bottom: 25px;
+            font-weight: bold;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            gap: 30px;
+        }
+
+        /* Tarjeta de viaje */
+        li.viaje {
+            background: rgba(0,0,0,0.35);
+            padding: 15px;
+            border-radius: 8px;
+            width: 260px;
+            position: relative;
+            box-shadow: 0 0 8px rgba(0,0,0,0.4);
+        }
+
+        li.viaje h2 {
+            margin: 0 0 10px 0;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* Precio total */
+        .detalle {
+            display: block;
+            background: #7da6d9;
+            color: black;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        /* Destacado */
+        .destacado {
+            color: rgb(255, 208, 0);
+        }
+
+        /* Botón reservar */
+        .reserva {
+            width: 100%;
+            padding: 10px;
+            background: #39a33d;
+            border: none;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+
+        /* Foto */
+        .fotos img {
+            width: 100%;
+            border: 4px solid black;
+        }
+
+        .fotos span {
+            display: block;
+            text-align: center;
+            margin-top: 6px;
+            font-size: 14px;
+        }
+
+        /* Precio por noche en diagonal */
+        .precio-noche {
+            position: absolute;
+            top: -15px;
+            right: -20px;
+            transform: rotate(20deg);
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* Formulario reserva */
+        .form-reserva {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-reserva input {
+            padding: 8px;
+            border-radius: 4px;
+            border: none;
+        }
+
+        .form-reserva button {
+            background: #5fcf5f;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+
+</head>
+<body>
+
+<h1 id="mostrar">MOSTRAR VIAJES</h1>
+
+<script>
+const viajes = [
+    {"clase_pais":"usa","ciudad_h2":"New York,NY","detalle_precio_total":"1,899","detalle_num_noches":7,"precio_noche":275,"ruta_imagen":"./photos/newyork.jpg","pie_imagen":"Puente Brooklyn"},
+    {"clase_pais":"paris","ciudad_h2":"Paris,Francia","detalle_precio_total":"1,499","detalle_num_noches":5,"precio_noche":300,"ruta_imagen":"./photos/paris.jpg","pie_imagen":"Notre Dame de Paris"},
+    {"clase_pais":"uk","ciudad_h2":"Londres,UK","detalle_precio_total":"2,199","detalle_num_noches":5,"precio_noche":440,"ruta_imagen":"./photos/london.jpg","pie_imagen":"Torre de Londres"}
+]
+
+const boton = document.querySelector("#mostrar");
+let lista = null;
+
+boton.addEventListener("click", () => {
+    if (!lista) {
+        crearDOM();
+        boton.textContent = "OCULTAR VIAJES";
+    } else {
+        lista.remove();
+        lista = null;
+        boton.textContent = "MOSTRAR VIAJES";
+    }
+});
+
+function crearDOM() {
+    lista = document.createElement("ul");
+
+    viajes.forEach(v => {
+
+        const li = document.createElement("li");
+        li.className = "viaje " + v.clase_pais;
+
+        const h2 = document.createElement("h2");
+        h2.textContent = v.ciudad_h2;
+
+        const precioTotal = document.createElement("span");
+        precioTotal.className = "detalle";
+        precioTotal.textContent = `${v.detalle_precio_total}€ por ${v.detalle_num_noches} noches`;
+
+        const precioDiagonal = document.createElement("span");
+        precioDiagonal.className = "precio-noche";
+        precioDiagonal.textContent = `${v.precio_noche}€/noche`;
+
+        const btn = document.createElement("button");
+        btn.className = "reserva";
+        btn.textContent = "Resérvalo ya!";
+
+        const ulFotos = document.createElement("ul");
+        ulFotos.className = "fotos";
+
+        const liFoto = document.createElement("li");
+        const img = document.createElement("img");
+        img.src = v.ruta_imagen;
+
+        const pie = document.createElement("span");
+        pie.textContent = v.pie_imagen;
+
+        liFoto.appendChild(img);
+        liFoto.appendChild(pie);
+        ulFotos.appendChild(liFoto);
+
+        [img, pie].forEach(el => {
+            el.addEventListener("mouseenter", () => precioDiagonal.classList.add("destacado"));
+            el.addEventListener("mouseleave", () => precioDiagonal.classList.remove("destacado"));
+        });
+
+        // Botón y guardado del nombre del usuario
+        btn.addEventListener("click", () => {
+            if (li.querySelector(".form-reserva")) return;
+
+            const form = document.createElement("div");
+            form.className = "form-reserva";
+
+            const input = document.createElement("input");
+            input.placeholder = "Tu nombre";
+
+            const aceptar = document.createElement("button");
+            aceptar.textContent = "Aceptar";
+
+            aceptar.addEventListener("click", () => {
+                const nombre = input.value.trim();
+                if (nombre !== "") {
+                    // localStorage es para guardar el contenido en el navegador.
+                    localStorage.setItem("nombre_usuario", nombre);
+                    form.remove();
+                }
+            });
+
+            form.appendChild(input);
+            form.appendChild(aceptar);
+            li.appendChild(form);
+        });
+
+        li.appendChild(h2);
+        li.appendChild(precioTotal);
+        li.appendChild(btn);
+        li.appendChild(ulFotos);
+        li.appendChild(precioDiagonal);
+
+        lista.appendChild(li);
+    });
+
+    document.body.appendChild(lista);
+}
+</script>
+
+</body>
+</html>
